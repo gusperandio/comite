@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
 
@@ -7,7 +6,12 @@ export const Counter = () => {
   const [count, setCount] = useState(0);
 
   return (
-    <Button radius="full" onPress={() => setCount(count + 1)}>
+    <Button
+      className="text-slate-50"
+      color="success"
+      variant="shadow"
+      onPress={() => setCount(count + 1)}
+    >
       Count is {count}
     </Button>
   );

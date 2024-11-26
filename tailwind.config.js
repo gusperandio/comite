@@ -14,8 +14,6 @@ module.exports = {
         mono: ["var(--font-mono)"],
       },
     },
-  },
-  darkMode: "class",
-  darkMode: "class",
+  }, 
   plugins: [nextui()],
 };
