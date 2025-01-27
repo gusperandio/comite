@@ -1,27 +1,17 @@
 import {
   Navbar as NextUINavbar,
   NavbarContent,
-  NavbarMenu,
-  NavbarMenuToggle,
-  NavbarBrand,
-  NavbarItem,
+  NavbarMenu, 
+  NavbarBrand, 
   NavbarMenuItem,
-} from "@heroui/navbar";
-import { Button } from "@heroui/button";
+} from "@heroui/navbar"; 
 import { Kbd } from "@heroui/kbd";
 import { Link } from "@heroui/link";
-import { Input } from "@heroui/input";
-import { link as linkStyles } from "@heroui/theme";
-import NextLink from "next/link";
-import clsx from "clsx";
+import { Input } from "@heroui/input"; 
+import NextLink from "next/link"; 
 
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
-  HeartFilledIcon,
+import { siteConfig } from "@/config/site"; 
+import { 
   SearchIcon,
   Logo,
 } from "@/components/icons";
