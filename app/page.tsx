@@ -1,15 +1,7 @@
 "use client";
 /* eslint-disable import/order */
 import socket from "../lib/socket/socket";
-import { Link } from "@heroui/link";
-import { Snippet } from "@heroui/snippet";
-import { Code } from "@heroui/code";
-import { button as buttonStyles } from "@heroui/theme";
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
 import React, { useEffect, useState } from "react";
-
 import {
   Modal,
   ModalContent,
@@ -28,12 +20,14 @@ import {
   Chip,
   Tooltip,
 } from "@heroui/react";
+import { Clock, X } from "lucide-react";
 
 export default function Home() {
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [reproved, setReproved] = useState(false);
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  
   useEffect(() => {
     // Listen for messages from the server
     socket.on("message", (data: string) => {
@@ -73,6 +67,36 @@ export default function Home() {
     tester1: string;
     tester2: string;
     notes: string;
+  }
+
+  const TimerFn = () => {
+    const [time, setTime] = useState(5);
+
+    useEffect(() => {
+      if (time > 0) {
+        const timerId = setInterval(() => {
+          setTime((prevTime) => prevTime - 1);
+        }, 1000);
+        return () => clearInterval(timerId);
+      }else if (time === 0) {
+        onClose();
+        setReproved(true);
+        setInterval(() => {
+          setReproved(false);
+        }, 7000);
+        return;
+      }
+    }, [time]);
+
+    return <div>Tempo: 00:{String(time).padStart(2, '0')}</div>;
+  };
+
+  const ConfirmFn = () => { 
+    onClose();
+  }
+
+  const ReproveFn = () => { 
+    onClose();
   }
 
   const rows: FakeData[] = [
@@ -159,51 +183,40 @@ export default function Home() {
     { key: "desenvolvedor", label: "desenvolvedor" },
     { key: "testes", label: "Testes" },
     { key: "data", label: "Data Implantação" },
+    { key: "btn", label: "Implantação" },
   ];
 
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <Button
-        onPress={() => {
-          onOpen();
-          socket.emit("showModal");
-        }}
-      >
-        Open Modal
-      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                db-manutencao-0.0.18 <TimerFn />
               </ModalHeader>
               <ModalBody>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
+                  REQ-22 - alterando um card onde estava com erro e implementado
+                  toda caracterestica do card
                 </p>
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+              <ModalFooter className="w-full flex justify-between">
+                <Button
+                  color="danger"
+                  variant="ghost"
+                  onPress={onClose}
+                  endContent={<X />}
+                >
+                  Reprovar
                 </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
+                <Button
+                  color="success"
+                  variant="shadow"
+                  className="text-white"
+                  onPress={ConfirmFn}
+                >
+                  Aprovar
                 </Button>
               </ModalFooter>
             </>
@@ -211,6 +224,7 @@ export default function Home() {
         </ModalContent>
       </Modal>
       <div className="flex flex-col gap-3">
+        {reproved ? <><h1 className="text-red-500">Marcio reprovou</h1></> : <></>}
         <Table>
           <TableHeader columns={columns}>
             {(column) => (
@@ -233,6 +247,19 @@ export default function Home() {
                 <TableCell>{data.tester1}</TableCell>
                 <TableCell>{data.tester2}</TableCell>
                 <TableCell className="text-center">{data.notes}</TableCell>
+                <TableCell className="text-center">
+                  <Button
+                    color="primary"
+                    variant="shadow"
+                    endContent={<Clock />}
+                    onPress={() => {
+                      onOpen();
+                      socket.emit("showModal");
+                    }}
+                  >
+                    TEMPORIZAR
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
