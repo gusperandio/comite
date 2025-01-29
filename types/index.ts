@@ -18,4 +18,5 @@ export interface FakeData {
     date: string;
     imp: string | undefined;
     show: boolean;
+    users: string[] | undefined;
   }

@@ -15,6 +15,7 @@ import {
   SearchIcon,
   Logo,
 } from "@/components/icons";
+import { ThemeSwitch } from "./theme-switch";
 
 export const Navbar = () => {
   const searchInput = (
@@ -44,7 +45,7 @@ export const Navbar = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
-            <p className="font-bold text-inherit">COMITÊ</p>
+            <p className="font-bold text-inherit">COMITÊ</p> 
           </NextLink>
         </NavbarBrand>
          
