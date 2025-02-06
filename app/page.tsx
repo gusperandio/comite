@@ -36,7 +36,7 @@ import ModalEdit from "./_components/ModalEdit";
 import ModalCount from "./_components/ModalCount";
 import ModalName from "./_components/ModelName";
 
-export default function Home() { 
+export default function Home() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [admin, setAdmin] = useState(false);
   const [updatedRows, setUpdatedRows] = useState<FakeData[]>(rows);
